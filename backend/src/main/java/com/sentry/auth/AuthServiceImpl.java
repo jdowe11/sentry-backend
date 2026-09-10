@@ -1,7 +1,7 @@
 package com.sentry.auth;
 
-import com.sentry.user.User;
 import com.sentry.user.UserService;
+import com.sentry.user.model.User;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
