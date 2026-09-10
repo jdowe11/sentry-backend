@@ -1,8 +1,10 @@
 package com.sentry.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sentry.user.dto.CreateUserRequest;
 import com.sentry.user.dto.UpdateDisplayNameRequest;
 import com.sentry.user.dto.UpdateUsernameRequest;
+import com.sentry.user.model.User;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,7 @@ public class UserControllerTest {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        when(userService.createUser(any(User.class))).thenReturn(savedUser);
+        when(userService.createUser(any(CreateUserRequest.class))).thenReturn(savedUser);
 
         String rawJson = "{\"username\":\"newguy\",\"displayName\":\"New Guy\",\"passwordHash\":\"hashed\"}";
 
@@ -67,7 +69,7 @@ public class UserControllerTest {
 
     @Test
     public void testCreateUser_Failure_BadRequest() throws Exception {
-        User inputUser = User.builder().username("").displayName("").build();
+        CreateUserRequest inputUser = CreateUserRequest.builder().username("").displayName("").build();
 
         mockMvc.perform(post("/api/v1.0/users")
                 .contentType(MediaType.APPLICATION_JSON)

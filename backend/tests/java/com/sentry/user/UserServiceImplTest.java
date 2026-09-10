@@ -2,6 +2,7 @@ package com.sentry.user;
 
 import com.sentry.user.dto.UpdateDisplayNameRequest;
 import com.sentry.user.dto.UpdateUsernameRequest;
+import com.sentry.user.model.User;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
