@@ -1,7 +1,9 @@
 package com.sentry.user;
 
+import com.sentry.user.dto.CreateUserRequest;
 import com.sentry.user.dto.UpdateDisplayNameRequest;
 import com.sentry.user.dto.UpdateUsernameRequest;
+import com.sentry.user.model.User;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,27 @@ class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    public User createUser(CreateUserRequest request) {
+        if (request == null || request.getUsername() == null || request.getUsername().trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be blank");
+        }
+        if (userRepository.existsByUsername(request.getUsername().trim())) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+        User user = User.builder()
+                .username(request.getUsername().trim())
+                .displayName(request.getDisplayName().trim())
+                .passwordHash(request.getPasswordHash())
+                .build();
+        return userRepository.save(user);
+    }
+
+    @Override
     public User createUser(User user) {
-        if (userRepository.existsByUsername(user.getUsername())) {
+        if (user == null || user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be blank");
+        }
+        if (userRepository.existsByUsername(user.getUsername().trim())) {
             throw new IllegalArgumentException("Username already exists");
         }
         return userRepository.save(user);

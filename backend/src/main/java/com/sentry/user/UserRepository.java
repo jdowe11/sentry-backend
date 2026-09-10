@@ -1,6 +1,9 @@
 package com.sentry.user;
 
 import java.util.Optional;
+
+import com.sentry.user.model.User;
+
 import java.util.List;
 
 interface UserRepository {
