@@ -1,7 +1,9 @@
 package com.sentry.friend;
 
 import com.sentry.common.TestUserHelper;
-import com.sentry.user.User;
+import com.sentry.friend.model.Friendship;
+import com.sentry.user.dto.UserResponse;
+import com.sentry.user.model.User;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,12 +66,12 @@ public class FriendshipRepositoryTest {
         friendshipRepository.save(f1);
         friendshipRepository.save(f2);
 
-        List<User> aliceFriends = friendshipRepository.findFriendsByUserId(alice.getId());
+        List<UserResponse> aliceFriends = friendshipRepository.findFriendsByUserId(alice.getId());
         assertEquals(2, aliceFriends.size());
         assertTrue(aliceFriends.stream().anyMatch(u -> u.getUsername().equals("bob")));
         assertTrue(aliceFriends.stream().anyMatch(u -> u.getUsername().equals("charlie")));
 
-        List<User> bobFriends = friendshipRepository.findFriendsByUserId(bob.getId());
+        List<UserResponse> bobFriends = friendshipRepository.findFriendsByUserId(bob.getId());
         assertEquals(1, bobFriends.size());
         assertEquals("alice", bobFriends.get(0).getUsername());
     }

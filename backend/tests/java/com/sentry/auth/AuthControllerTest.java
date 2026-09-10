@@ -2,7 +2,7 @@ package com.sentry.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sentry.auth.dto.LoginRequest;
-import com.sentry.user.User;
+import com.sentry.user.model.User;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

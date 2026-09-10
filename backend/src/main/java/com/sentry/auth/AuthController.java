@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sentry.auth.dto.LoginRequest;
-import com.sentry.user.User;
+import com.sentry.user.dto.UserResponse;
+import com.sentry.user.model.User;
 
 @RestController
 @RequestMapping("/api/v1.0")
@@ -19,9 +20,9 @@ public class AuthController {
 
     /// User Authentication (Login)
     @PostMapping("/auth/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest) {
         User user = authService.login(loginRequest.getUsername(), loginRequest.getPassword());
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(UserResponse.fromUser(user));
     }
 
     /// User Logout

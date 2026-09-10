@@ -1,7 +1,7 @@
 package com.sentry.auth;
 
-import com.sentry.user.User;
 import com.sentry.user.UserService;
+import com.sentry.user.model.User;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -4,6 +4,7 @@ import com.sentry.common.annotation.CurrentUserId;
 import com.sentry.friend.dto.FriendRequestResponse;
 import com.sentry.friend.dto.SendFriendRequest;
 import com.sentry.friend.dto.UpdateStatusRequest;
+import com.sentry.friend.model.FriendRequest;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;

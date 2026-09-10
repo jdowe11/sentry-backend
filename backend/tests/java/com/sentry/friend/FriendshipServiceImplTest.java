@@ -1,7 +1,9 @@
 package com.sentry.friend;
 
-import com.sentry.user.User;
+import com.sentry.friend.model.Friendship;
 import com.sentry.user.UserService;
+import com.sentry.user.dto.UserResponse;
+import com.sentry.user.model.User;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,12 +66,12 @@ public class FriendshipServiceImplTest {
     @Test
     public void testGetFriendsList_Success() {
         User u1 = User.builder().id(1L).username("u1").build();
-        User friend = User.builder().id(2L).username("friend").build();
+        UserResponse friend = UserResponse.builder().id(2L).username("friend").build();
 
         when(userService.getUserById(1L)).thenReturn(Optional.of(u1));
         when(friendshipRepository.findFriendsByUserId(1L)).thenReturn(Arrays.asList(friend));
 
-        List<User> list = friendshipService.getFriendsList(1L);
+        List<UserResponse> list = friendshipService.getFriendsList(1L);
         assertEquals(1, list.size());
         assertEquals("friend", list.get(0).getUsername());
     }

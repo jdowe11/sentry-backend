@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
-import com.sentry.friend.FriendRequest;
+import com.sentry.friend.model.FriendRequest;
 
 @Data
 @Builder

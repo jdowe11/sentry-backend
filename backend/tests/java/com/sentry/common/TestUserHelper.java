@@ -1,9 +1,10 @@
 package com.sentry.common;
 
-import com.sentry.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+
+import com.sentry.user.model.User;
 
 import java.sql.PreparedStatement;
 

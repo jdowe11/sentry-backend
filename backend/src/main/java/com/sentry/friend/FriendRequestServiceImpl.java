@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sentry.friend.dto.FriendRequestResponse;
-import com.sentry.user.User;
+import com.sentry.friend.model.FriendRequest;
 import com.sentry.user.UserService;
+import com.sentry.user.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

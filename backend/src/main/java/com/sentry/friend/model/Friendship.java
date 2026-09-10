@@ -1,4 +1,4 @@
-package com.sentry.friend;
+package com.sentry.friend.model;
 
 import lombok.*;
 import java.time.LocalDateTime;

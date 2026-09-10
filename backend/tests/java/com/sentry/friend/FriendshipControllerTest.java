@@ -1,7 +1,6 @@
 package com.sentry.friend;
 
-import com.sentry.user.User;
-
+import com.sentry.user.dto.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,7 +32,7 @@ public class FriendshipControllerTest {
 
     @Test
     public void testGetFriendsList_Success() throws Exception {
-        User friend = User.builder().id(2L).username("friend").displayName("Friend User").build();
+        UserResponse friend = UserResponse.builder().id(2L).username("friend").displayName("Friend User").build();
         when(friendshipService.getFriendsList(1L)).thenReturn(Arrays.asList(friend));
 
         mockMvc.perform(get("/api/v1.0/friends")
