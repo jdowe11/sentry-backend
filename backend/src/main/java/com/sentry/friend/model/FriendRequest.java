@@ -1,7 +1,7 @@
-package com.sentry.friend;
+package com.sentry.friend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sentry.user.User;
+import com.sentry.user.dto.UserResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -52,6 +52,6 @@ public class FriendRequest {
     private LocalDateTime updatedAt;
 
     // Related user profiles populated for frontend representation
-    private User sender;
-    private User receiver;
+    private UserResponse sender;
+    private UserResponse receiver;
 }

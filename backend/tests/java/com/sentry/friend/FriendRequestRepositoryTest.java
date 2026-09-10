@@ -1,7 +1,8 @@
 package com.sentry.friend;
 
 import com.sentry.common.TestUserHelper;
-import com.sentry.user.User;
+import com.sentry.friend.model.FriendRequest;
+import com.sentry.user.model.User;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

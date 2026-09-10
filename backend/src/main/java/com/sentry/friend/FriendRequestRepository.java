@@ -3,6 +3,8 @@ package com.sentry.friend;
 import java.util.List;
 import java.util.Optional;
 
+import com.sentry.friend.model.FriendRequest;
+
 interface FriendRequestRepository {
     FriendRequest save(FriendRequest request);
     Optional<FriendRequest> findById(Long id);

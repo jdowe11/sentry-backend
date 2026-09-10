@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sentry.friend.dto.FriendRequestResponse;
 import com.sentry.friend.dto.SendFriendRequest;
 import com.sentry.friend.dto.UpdateStatusRequest;
+import com.sentry.friend.model.FriendRequest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

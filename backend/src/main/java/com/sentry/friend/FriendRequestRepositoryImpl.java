@@ -1,7 +1,7 @@
 package com.sentry.friend;
 
-import com.sentry.user.User;
-
+import com.sentry.friend.model.FriendRequest;
+import com.sentry.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,14 +20,14 @@ class FriendRequestRepositoryImpl implements FriendRequestRepository {
     private final JdbcTemplate jdbcTemplate;
 
     private final RowMapper<FriendRequest> friendRequestRowMapper = (rs, rowNum) -> {
-        User sender = User.builder()
+        UserResponse sender = UserResponse.builder()
                 .id(rs.getLong("sender_id"))
                 .username(rs.getString("sender_username"))
                 .displayName(rs.getString("sender_display_name"))
                 .createdAt(rs.getTimestamp("sender_created_at").toLocalDateTime())
                 .build();
 
-        User receiver = User.builder()
+        UserResponse receiver = UserResponse.builder()
                 .id(rs.getLong("receiver_id"))
                 .username(rs.getString("receiver_username"))
                 .displayName(rs.getString("receiver_display_name"))

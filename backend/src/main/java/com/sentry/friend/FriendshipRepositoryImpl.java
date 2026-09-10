@@ -1,7 +1,7 @@
 package com.sentry.friend;
 
-import com.sentry.user.User;
-
+import com.sentry.friend.model.Friendship;
+import com.sentry.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,11 +15,10 @@ class FriendshipRepositoryImpl implements FriendshipRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final RowMapper<User> userRowMapper = (rs, rowNum) -> User.builder()
+    private final RowMapper<UserResponse> userResponseRowMapper = (rs, rowNum) -> UserResponse.builder()
             .id(rs.getLong("id"))
             .username(rs.getString("username"))
             .displayName(rs.getString("display_name"))
-            .passwordHash(rs.getString("password_hash"))
             .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
             .build();
 
@@ -47,11 +46,11 @@ class FriendshipRepositoryImpl implements FriendshipRepository {
     }
 
     @Override
-    public List<User> findFriendsByUserId(Long userId) {
-        String sql = "SELECT u.* FROM users u " +
+    public List<UserResponse> findFriendsByUserId(Long userId) {
+        String sql = "SELECT u.id, u.username, u.display_name, u.created_at FROM users u " +
                 "JOIN friendships f ON (f.user_id_1 = u.id OR f.user_id_2 = u.id) " +
                 "WHERE (f.user_id_1 = ? OR f.user_id_2 = ?) AND u.id <> ?";
-        return jdbcTemplate.query(sql, userRowMapper, userId, userId, userId);
+        return jdbcTemplate.query(sql, userResponseRowMapper, userId, userId, userId);
     }
 
     @Override

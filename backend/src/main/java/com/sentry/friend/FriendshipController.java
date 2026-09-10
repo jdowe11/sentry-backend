@@ -1,7 +1,7 @@
 package com.sentry.friend;
 
 import com.sentry.common.annotation.CurrentUserId;
-import com.sentry.user.User;
+import com.sentry.user.dto.UserResponse;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Min;
@@ -21,8 +21,8 @@ public class FriendshipController {
     private final FriendshipService friendshipService;
 
     @GetMapping("/friends")
-    public ResponseEntity<List<User>> getFriendsList(@Parameter(hidden = true) @CurrentUserId Long userId) {
-        List<User> friends = friendshipService.getFriendsList(userId);
+    public ResponseEntity<List<UserResponse>> getFriendsList(@Parameter(hidden = true) @CurrentUserId Long userId) {
+        List<UserResponse> friends = friendshipService.getFriendsList(userId);
         return ResponseEntity.ok(friends);
     }
 

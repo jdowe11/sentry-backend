@@ -1,8 +1,10 @@
 package com.sentry.friend;
 
 import com.sentry.friend.dto.FriendRequestResponse;
-import com.sentry.user.User;
+import com.sentry.friend.model.FriendRequest;
 import com.sentry.user.UserService;
+import com.sentry.user.dto.UserResponse;
+import com.sentry.user.model.User;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -93,7 +95,7 @@ public class FriendRequestServiceImplTest {
         User receiver = User.builder().id(2L).username("bob").build();
 
         when(userService.getUserByUsername("bob")).thenReturn(Optional.of(receiver));
-        when(friendshipService.getFriendsList(1L)).thenReturn(Arrays.asList(receiver));
+        when(friendshipService.getFriendsList(1L)).thenReturn(Arrays.asList(UserResponse.fromUser(receiver)));
 
         Exception ex = assertThrows(IllegalArgumentException.class, () -> {
             friendRequestService.sendFriendRequest(1L, "bob");

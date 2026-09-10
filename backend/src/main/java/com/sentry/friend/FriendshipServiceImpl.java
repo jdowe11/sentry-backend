@@ -1,7 +1,8 @@
 package com.sentry.friend;
 
-import com.sentry.user.User;
+import com.sentry.friend.model.Friendship;
 import com.sentry.user.UserService;
+import com.sentry.user.dto.UserResponse;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public List<User> getFriendsList(Long userId) {
+    public List<UserResponse> getFriendsList(Long userId) {
         userService.getUserById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + userId + " not found"));
 
