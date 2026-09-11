@@ -3,9 +3,6 @@ package com.sentry.user.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -30,9 +27,6 @@ public class User {
      * Cannot be empty.
      * Cannot be longer than 32 characters.
      */
-    @NotBlank(message = "Username cannot be blank")
-    @Size(min = 3, max = 32, message = "Username cannot exceed 32 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9_-]+$", message = "Username can only contain alphanumeric characters, hyphens, and underscores")
     private String username;
 
     /*
@@ -42,8 +36,6 @@ public class User {
      * Cannot be empty.
      * Cannot be longer than 50 characters.
      */
-    @NotBlank(message = "Display name cannot be blank")
-    @Size(max = 50, message = "Display name cannot exceed 50 characters")
     private String displayName;
 
     /*
@@ -53,7 +45,6 @@ public class User {
      * Cannot be empty.
      * Cannot be longer than 255 characters.
      */
-    @NotBlank(message = "Password hash cannot be blank")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passwordHash;
 
