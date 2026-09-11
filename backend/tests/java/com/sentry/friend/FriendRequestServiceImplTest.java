@@ -1,6 +1,7 @@
 package com.sentry.friend;
 
 import com.sentry.friend.dto.FriendRequestResponse;
+import com.sentry.friend.dto.PendingFriendRequestsResponse;
 import com.sentry.friend.model.FriendRequest;
 import com.sentry.user.UserService;
 import com.sentry.user.dto.UserResponse;
@@ -48,7 +49,7 @@ public class FriendRequestServiceImplTest {
                 .build();
         when(friendRequestRepository.save(any(FriendRequest.class))).thenReturn(savedRequest);
 
-        FriendRequest result = friendRequestService.sendFriendRequest(1L, "bob");
+        FriendRequestResponse result = friendRequestService.sendFriendRequest(1L, "bob");
         assertNotNull(result);
         assertEquals(100L, result.getId());
         assertEquals("pending", result.getStatus());
@@ -141,7 +142,7 @@ public class FriendRequestServiceImplTest {
         when(friendRequestRepository.findBySenderAndReceiver(1L, 2L)).thenReturn(Optional.of(existing));
         when(friendRequestRepository.save(existing)).thenAnswer(inv -> inv.getArgument(0));
 
-        FriendRequest result = friendRequestService.sendFriendRequest(1L, "bob");
+        FriendRequestResponse result = friendRequestService.sendFriendRequest(1L, "bob");
         assertEquals("pending", result.getStatus());
         assertEquals(1L, result.getSenderId());
         assertEquals(2L, result.getReceiverId());
@@ -154,7 +155,7 @@ public class FriendRequestServiceImplTest {
         when(friendRequestRepository.save(request)).thenAnswer(inv -> inv.getArgument(0));
         when(friendshipService.addFriendship(2L, 1L)).thenReturn(null);
 
-        FriendRequest result = friendRequestService.acceptFriendRequest(1L, 100L);
+        FriendRequestResponse result = friendRequestService.acceptFriendRequest(1L, 100L);
         assertEquals("accepted", result.getStatus());
         verify(friendshipService, times(1)).addFriendship(2L, 1L);
     }
@@ -187,7 +188,7 @@ public class FriendRequestServiceImplTest {
         when(friendRequestRepository.findById(100L)).thenReturn(Optional.of(request));
         when(friendRequestRepository.save(request)).thenAnswer(inv -> inv.getArgument(0));
 
-        FriendRequest result = friendRequestService.declineFriendRequest(1L, 100L);
+        FriendRequestResponse result = friendRequestService.declineFriendRequest(1L, 100L);
         assertEquals("declined", result.getStatus());
     }
 
@@ -197,16 +198,17 @@ public class FriendRequestServiceImplTest {
         when(friendRequestRepository.findById(100L)).thenReturn(Optional.of(request));
         when(friendRequestRepository.save(request)).thenAnswer(inv -> inv.getArgument(0));
 
-        FriendRequest result = friendRequestService.cancelFriendRequest(1L, 100L);
+        FriendRequestResponse result = friendRequestService.cancelFriendRequest(1L, 100L);
         assertEquals("cancelled", result.getStatus());
     }
+
     @Test
     public void testGetPendingRequests() {
         FriendRequest r1 = FriendRequest.builder().senderId(1L).receiverId(2L).status("pending").build(); // outgoing
         FriendRequest r2 = FriendRequest.builder().senderId(3L).receiverId(1L).status("pending").build(); // incoming
         when(friendRequestRepository.findPendingByUserId(1L)).thenReturn(Arrays.asList(r1, r2));
 
-        FriendRequestResponse response = friendRequestService.getPendingRequests(1L);
+        PendingFriendRequestsResponse response = friendRequestService.getPendingRequests(1L);
         assertEquals(1, response.getIncoming().size());
         assertEquals(1, response.getOutgoing().size());
         assertEquals(3L, response.getIncoming().get(0).getSenderId());

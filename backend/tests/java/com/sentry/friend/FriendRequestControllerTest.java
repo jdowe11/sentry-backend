@@ -2,9 +2,9 @@ package com.sentry.friend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sentry.friend.dto.FriendRequestResponse;
+import com.sentry.friend.dto.PendingFriendRequestsResponse;
 import com.sentry.friend.dto.SendFriendRequest;
 import com.sentry.friend.dto.UpdateStatusRequest;
-import com.sentry.friend.model.FriendRequest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class FriendRequestControllerTest {
     @Test
     public void testSendFriendRequest_Success() throws Exception {
         SendFriendRequest payload = SendFriendRequest.builder().receiverUsername("bob").build();
-        FriendRequest created = FriendRequest.builder().id(10L).senderId(1L).receiverId(2L).status("pending").build();
+        FriendRequestResponse created = FriendRequestResponse.builder().id(10L).senderId(1L).receiverId(2L).status("pending").build();
 
         when(friendRequestService.sendFriendRequest(anyLong(), anyString())).thenReturn(created);
 
@@ -72,7 +72,7 @@ public class FriendRequestControllerTest {
     @Test
     public void testUpdateFriendRequestStatus_Accepted() throws Exception {
         UpdateStatusRequest payload = UpdateStatusRequest.builder().status("accepted").build();
-        FriendRequest updated = FriendRequest.builder().id(10L).senderId(2L).receiverId(1L).status("accepted").build();
+        FriendRequestResponse updated = FriendRequestResponse.builder().id(10L).senderId(2L).receiverId(1L).status("accepted").build();
 
         when(friendRequestService.acceptFriendRequest(1L, 10L)).thenReturn(updated);
 
@@ -87,7 +87,7 @@ public class FriendRequestControllerTest {
     @Test
     public void testUpdateFriendRequestStatus_Declined() throws Exception {
         UpdateStatusRequest payload = UpdateStatusRequest.builder().status("declined").build();
-        FriendRequest updated = FriendRequest.builder().id(10L).senderId(2L).receiverId(1L).status("declined").build();
+        FriendRequestResponse updated = FriendRequestResponse.builder().id(10L).senderId(2L).receiverId(1L).status("declined").build();
 
         when(friendRequestService.declineFriendRequest(1L, 10L)).thenReturn(updated);
 
@@ -102,7 +102,7 @@ public class FriendRequestControllerTest {
     @Test
     public void testUpdateFriendRequestStatus_Cancelled() throws Exception {
         UpdateStatusRequest payload = UpdateStatusRequest.builder().status("cancelled").build();
-        FriendRequest updated = FriendRequest.builder().id(10L).senderId(1L).receiverId(2L).status("cancelled").build();
+        FriendRequestResponse updated = FriendRequestResponse.builder().id(10L).senderId(1L).receiverId(2L).status("cancelled").build();
 
         when(friendRequestService.cancelFriendRequest(1L, 10L)).thenReturn(updated);
 
@@ -116,10 +116,10 @@ public class FriendRequestControllerTest {
 
     @Test
     public void testGetPendingRequests_Success() throws Exception {
-        FriendRequest incoming = FriendRequest.builder().id(5L).senderId(2L).receiverId(1L).status("pending").build();
-        FriendRequest outgoing = FriendRequest.builder().id(6L).senderId(1L).receiverId(3L).status("pending").build();
+        FriendRequestResponse incoming = FriendRequestResponse.builder().id(5L).senderId(2L).receiverId(1L).status("pending").build();
+        FriendRequestResponse outgoing = FriendRequestResponse.builder().id(6L).senderId(1L).receiverId(3L).status("pending").build();
 
-        FriendRequestResponse response = FriendRequestResponse.builder()
+        PendingFriendRequestsResponse response = PendingFriendRequestsResponse.builder()
                 .incoming(Collections.singletonList(incoming))
                 .outgoing(Collections.singletonList(outgoing))
                 .build();

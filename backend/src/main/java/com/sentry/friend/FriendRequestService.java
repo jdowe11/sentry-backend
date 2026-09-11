@@ -1,12 +1,12 @@
 package com.sentry.friend;
 
 import com.sentry.friend.dto.FriendRequestResponse;
-import com.sentry.friend.model.FriendRequest;
+import com.sentry.friend.dto.PendingFriendRequestsResponse;
 
 public interface FriendRequestService {
-    FriendRequest sendFriendRequest(Long senderId, String receiverUsername);
-    FriendRequest acceptFriendRequest(Long userId, Long requestId);
-    FriendRequest declineFriendRequest(Long userId, Long requestId);
-    FriendRequest cancelFriendRequest(Long userId, Long requestId);
-    FriendRequestResponse getPendingRequests(Long userId);
+    FriendRequestResponse sendFriendRequest(Long senderId, String receiverUsername);
+    FriendRequestResponse acceptFriendRequest(Long userId, Long requestId);
+    FriendRequestResponse declineFriendRequest(Long userId, Long requestId);
+    FriendRequestResponse cancelFriendRequest(Long userId, Long requestId);
+    PendingFriendRequestsResponse getPendingRequests(Long userId);
 }
