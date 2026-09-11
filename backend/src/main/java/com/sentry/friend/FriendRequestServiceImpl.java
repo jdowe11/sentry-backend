@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sentry.friend.dto.FriendRequestResponse;
+import com.sentry.friend.dto.PendingFriendRequestsResponse;
 import com.sentry.friend.model.FriendRequest;
 import com.sentry.user.UserService;
 import com.sentry.user.model.User;
@@ -22,7 +23,7 @@ class FriendRequestServiceImpl implements FriendRequestService {
     private final FriendshipService friendshipService;
 
     @Override
-    public FriendRequest sendFriendRequest(Long senderId, String receiverUsername) {
+    public FriendRequestResponse sendFriendRequest(Long senderId, String receiverUsername) {
         User receiver = userService.getUserByUsername(receiverUsername)
                 .orElseThrow(() -> new IllegalArgumentException("User with username '" + receiverUsername + "' not found"));
 
@@ -56,7 +57,7 @@ class FriendRequestServiceImpl implements FriendRequestService {
                     request.setSenderId(senderId);
                     request.setReceiverId(receiver.getId());
                     request.setStatus("pending");
-                    return friendRequestRepository.save(request);
+                    return FriendRequestResponse.fromFriendRequest(friendRequestRepository.save(request));
                 default:
                     throw new IllegalStateException("Unexpected friend request status: " + request.getStatus());
             }
@@ -68,12 +69,12 @@ class FriendRequestServiceImpl implements FriendRequestService {
                 .status("pending")
                 .build();
 
-        return friendRequestRepository.save(newRequest);
+        return FriendRequestResponse.fromFriendRequest(friendRequestRepository.save(newRequest));
     }
 
     @Override
     @Transactional
-    public FriendRequest acceptFriendRequest(Long userId, Long requestId) {
+    public FriendRequestResponse acceptFriendRequest(Long userId, Long requestId) {
         FriendRequest request = friendRequestRepository.findById(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("Friend request not found"));
 
@@ -88,11 +89,11 @@ class FriendRequestServiceImpl implements FriendRequestService {
         request.setStatus("accepted");
         FriendRequest saved = friendRequestRepository.save(request);
         friendshipService.addFriendship(request.getSenderId(), request.getReceiverId());
-        return saved;
+        return FriendRequestResponse.fromFriendRequest(saved);
     }
 
     @Override
-    public FriendRequest declineFriendRequest(Long userId, Long requestId) {
+    public FriendRequestResponse declineFriendRequest(Long userId, Long requestId) {
         FriendRequest request = friendRequestRepository.findById(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("Friend request not found"));
 
@@ -105,11 +106,11 @@ class FriendRequestServiceImpl implements FriendRequestService {
         }
 
         request.setStatus("declined");
-        return friendRequestRepository.save(request);
+        return FriendRequestResponse.fromFriendRequest(friendRequestRepository.save(request));
     }
 
     @Override
-    public FriendRequest cancelFriendRequest(Long userId, Long requestId) {
+    public FriendRequestResponse cancelFriendRequest(Long userId, Long requestId) {
         FriendRequest request = friendRequestRepository.findById(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("Friend request not found"));
 
@@ -122,24 +123,24 @@ class FriendRequestServiceImpl implements FriendRequestService {
         }
 
         request.setStatus("cancelled");
-        return friendRequestRepository.save(request);
+        return FriendRequestResponse.fromFriendRequest(friendRequestRepository.save(request));
     }
 
     @Override
-    public FriendRequestResponse getPendingRequests(Long userId) {
+    public PendingFriendRequestsResponse getPendingRequests(Long userId) {
         List<FriendRequest> pending = friendRequestRepository.findPendingByUserId(userId);
-        List<FriendRequest> incoming = new ArrayList<>();
-        List<FriendRequest> outgoing = new ArrayList<>();
+        List<FriendRequestResponse> incoming = new ArrayList<>();
+        List<FriendRequestResponse> outgoing = new ArrayList<>();
 
         for (FriendRequest request : pending) {
             if (request.getReceiverId().equals(userId)) {
-                incoming.add(request);
+                incoming.add(FriendRequestResponse.fromFriendRequest(request));
             } else if (request.getSenderId().equals(userId)) {
-                outgoing.add(request);
+                outgoing.add(FriendRequestResponse.fromFriendRequest(request));
             }
         }
 
-        return FriendRequestResponse.builder()
+        return PendingFriendRequestsResponse.builder()
                 .incoming(incoming)
                 .outgoing(outgoing)
                 .build();

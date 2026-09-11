@@ -11,7 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CreateUserRequest {
-
     @NotBlank(message = "Username cannot be blank")
     @Size(min = 3, max = 32, message = "Username cannot exceed 32 characters")
     @Pattern(regexp = "^[a-zA-Z0-9_-]+$", message = "Username can only contain alphanumeric characters, hyphens, and underscores")
