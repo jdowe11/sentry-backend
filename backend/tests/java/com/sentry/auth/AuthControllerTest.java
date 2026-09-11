@@ -73,6 +73,32 @@ public class AuthControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void testLogin_BlankUsername_BadRequest() throws Exception {
+        LoginRequest request = LoginRequest.builder()
+                .username("   ")
+                .password("validPassword")
+                .build();
+
+        mockMvc.perform(post("/api/v1.0/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testLogin_BlankPassword_BadRequest() throws Exception {
+        LoginRequest request = LoginRequest.builder()
+                .username("validUser")
+                .password("   ")
+                .build();
+
+        mockMvc.perform(post("/api/v1.0/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
     // ==========================================
     // POST /auth/logout Tests
     // ==========================================
