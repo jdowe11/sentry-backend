@@ -37,3 +37,35 @@ CREATE TABLE friendships (
 );
 
 CREATE INDEX idx_friendships_user_id_2 ON friendships(user_id_2);
+
+DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS chat_participants CASCADE;
+DROP TABLE IF EXISTS chats CASCADE;
+
+--- Table structure for chats
+CREATE TABLE chats (
+    id BIGSERIAL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+--- Table structure for chat_participants
+CREATE TABLE chat_participants (
+    chat_id BIGINT NOT NULL REFERENCES chats(id) ON DELETE CASCADE,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (chat_id, user_id)
+);
+
+CREATE INDEX idx_chat_participants_user_id ON chat_participants(user_id);
+
+--- Table structure for messages
+CREATE TABLE messages (
+    id BIGSERIAL PRIMARY KEY,
+    chat_id BIGINT NOT NULL REFERENCES chats(id) ON DELETE CASCADE,
+    sender_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    ciphertext TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_messages_chat_id_created_at ON messages(chat_id, created_at DESC);
